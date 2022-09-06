@@ -1,0 +1,5 @@
+FROM nginx:alpine
+# RUN npm install && npm run build
+COPY dist /usr/share/nginx/html
+EXPOSE 80
+# CMD [ "service", "nginx", "start" ]

@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  web:
+    build: "web"
+    depends_on:
+      - service
+    expose:
+      - "80"
+    ports:
+      - "80:80"
+
+  service:
+    build: "service"
+    expose:
+      - "3000"
