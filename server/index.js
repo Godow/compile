@@ -3,6 +3,7 @@ const bodyParser = require("koa-bodyparser");
 const Router = require("koa-router");
 const cors = require("koa2-cors");
 const path = require("path");
+const fs = require("fs");
 const execSync = require("child_process").execSync;
 const { langMap } = require("./langMap");
 // const usersRouter=require('./routers/users.js')
@@ -16,18 +17,28 @@ app.use(
 );
 
 app.use(bodyParser());
-const inputContent = "console.log(555)";
+// const inputContent = "console.log(555)";
 const playGround = path.join(__dirname, "playground");
 
-// 收尾处理
+// 预处理、收尾处理
 app.use(async (ctx, next) => {
+  const dateStr = new Date(Date.now() + 8 * 3600 * 1000)
+    .toISOString()
+    .slice(0, 10);
+  ctx.log = content => {
+    fs.appendFileSync(
+      playGround + "/" + dateStr.slice(0, 10) + ".log",
+      dateStr.slice(11, -5) + "-" + content + "\n"
+    );
+  };
+
   await next();
 
   // 删除临时目录
   try {
     execSync(`rm -rf ${ctx.onceDirPath}`);
   } catch (e) {
-    console.log("删除临时目录失败:", e.message);
+    ctx.log("删除临时目录失败:", e.message);
   }
 
   // 整理返回值
@@ -46,7 +57,7 @@ app.use(async (ctx, next) => {
   const lang = ctx.request.body.lang;
 
   if (!lang || !langMap.has(lang)) {
-    console.log("获取语言选项失败");
+    ctx.log("获取语言选项失败");
     return;
   }
 
@@ -64,7 +75,7 @@ app.use(async (ctx, next) => {
   try {
     execSync(`mkdir -p ${ctx.langDir}`);
   } catch (e) {
-    console.log("创建语言目录失败:", e.message);
+    ctx.log("创建语言目录失败:", e.message);
     return;
   }
   await next();
@@ -73,10 +84,10 @@ app.use(async (ctx, next) => {
 // 创建一次性临时目录
 app.use(async (ctx, next) => {
   try {
-    ctx.onceDirPath = ctx.langDir + "/" + DataTransferItem.now().toString();
+    ctx.onceDirPath = ctx.langDir + "/" + Date.now().toString();
     execSync(`mkdir -p ${ctx.onceDirPath}`);
   } catch (e) {
-    console.log("创建临时目录失败:", e.message);
+    ctx.log("创建临时目录失败:", e.message);
     return;
   }
 
@@ -87,9 +98,9 @@ app.use(async (ctx, next) => {
 app.use(async (ctx, next) => {
   ctx.codeFilePath = ctx.onceDirPath + "/main" + ctx.ext;
   try {
-    fs.writeFileSync(ctx.codeFilePath, inputContent);
+    fs.writeFileSync(ctx.codeFilePath, ctx.request.body.inputContent);
   } catch (e) {
-    console.log("代码写入文件失败:", e.message);
+    ctx.log("代码写入文件失败:", e.message);
     return;
   }
 
@@ -99,10 +110,10 @@ app.use(async (ctx, next) => {
 // 执行程序文件
 app.use(async (ctx, next) => {
   try {
-    const rlt = execSync(`${ctx.cmd} ${ctx.codeFilePath}}`);
+    const rlt = execSync(`${ctx.cmd} ${ctx.codeFilePath}`);
     ctx.body = rlt.toString();
   } catch (e) {
-    console.log("程序执行失败:", e.message);
+    ctx.log("程序执行失败:", e.message);
     ctx.body = e.message;
   }
 });

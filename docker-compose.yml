@@ -3,16 +3,18 @@ version: "3.8"
 services:
   web:
     build: "web"
-    restart: "always"
+    image: "godow/compile-web"
     depends_on:
-      - service
+      - server
     expose:
       - "80"
     ports:
-      - "80:80"
+      - "7777:80"
 
-  service:
-    build: "service"
-    restart: "always"
+  server:
+    build: "server"
+    image: "godow/compile-server"
     expose:
       - "3000"
+    ports:
+      - "3000:3000"

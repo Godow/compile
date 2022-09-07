@@ -1,9 +1,9 @@
-FROM node:latest
-RUN mkdir -p /app/service
-COPY . /app/service
-WORKDIR /app/service
+FROM node:alpine3.16
+RUN mkdir -p /app/server
+COPY . /app/server
+WORKDIR /app/server
 RUN npm install -g cnpm --registry=https://registry.npmmirror.com/
 RUN cnpm config set registry https://registry.npmmirror.com/
 RUN cnpm install
 EXPOSE 3000
-CMD [ "node", "index.js"]
+CMD [ "nohup", "node", "index.js", "&"]
