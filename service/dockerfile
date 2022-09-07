@@ -1,6 +1,9 @@
 FROM node:latest
-ADD * /app/
-WORKDIR /app/
-# RUN npm run install
+RUN mkdir -p /app/service
+COPY . /app/service
+WORKDIR /app/service
+RUN npm install -g cnpm --registry=https://registry.npmmirror.com/
+RUN cnpm config set registry https://registry.npmmirror.com/
+RUN cnpm install
 EXPOSE 3000
 CMD [ "node", "index.js"]
