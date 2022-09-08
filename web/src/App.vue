@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="home-page">
     <el-select v-model="lang" class="m-2" placeholder="Select" size="large">
       <el-option
         v-for="item in langOptions"
@@ -41,15 +41,28 @@ export default {
           value: "node",
           label: "node",
         },
+        {
+          value: "javascript",
+          label: "javascript",
+        },
+        {
+          value: "bash",
+          label: "bash",
+        },
+        {
+          value: "c",
+          label: "c",
+        },
+        {
+          value: "cpp",
+          label: "cpp",
+        },
       ],
       lang: "node", // 默认语言、选中的语言
     };
   },
   methods: {
-    getConfig() {
-      return new URL(`../public/server.json`, import.meta.url);
-    },
-    run() {
+    async run() {
       if (!this.inputContent) {
         return;
       }
@@ -68,4 +81,10 @@ export default {
   },
 };
 </script>
-<style scoped></style>
+<style scoped>
+.home-page {
+  width: 70%;
+  margin: 0 auto;
+  margin-top: 30px;
+}
+</style>

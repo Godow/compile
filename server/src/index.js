@@ -17,18 +17,15 @@ app.use(
 );
 
 app.use(bodyParser());
-// const inputContent = "console.log(555)";
 const playGround = path.join(__dirname, "playground");
 
 // 预处理、收尾处理
 app.use(async (ctx, next) => {
-  const dateStr = new Date(Date.now() + 8 * 3600 * 1000)
-    .toISOString()
-    .slice(0, 10);
-  ctx.log = content => {
+  const dateStr = new Date(Date.now() + 8 * 3600 * 1000).toISOString();
+  ctx.log = (errType, errMsg = "") => {
     fs.appendFileSync(
       playGround + "/" + dateStr.slice(0, 10) + ".log",
-      dateStr.slice(11, -5) + "-" + content + "\n"
+      dateStr.slice(11, -5) + "-" + errType + errMsg + "\n"
     );
   };
 
@@ -43,12 +40,18 @@ app.use(async (ctx, next) => {
 
   // 整理返回值
   if (ctx.body) {
+    // 不要暴露路径信息
+    ctx.body = ctx.body.replaceAll(ctx.codeFile, "");
+    ctx.body = ctx.body.replaceAll(ctx.onceDirPath, "");
+
     ctx.status = 200;
-    ctx.success = true;
+    if (ctx.success === undefined) {
+      ctx.success = true;
+    }
   } else {
     ctx.status = 501;
     ctx.success = false;
-    ctx.body = "Error";
+    ctx.body = "Sorry, server occurs error ...";
   }
 });
 
@@ -63,7 +66,7 @@ app.use(async (ctx, next) => {
 
   ctx.lang = lang;
   ctx.cmd = langMap.get(lang).cmd;
-  ctx.ext = langMap.get(lang).ext;
+  ctx.filename = langMap.get(lang).filename;
 
   await next();
 });
@@ -96,9 +99,9 @@ app.use(async (ctx, next) => {
 
 // 创建程序文件并写入内容
 app.use(async (ctx, next) => {
-  ctx.codeFilePath = ctx.onceDirPath + "/main" + ctx.ext;
+  ctx.codeFile = ctx.onceDirPath + "/" + ctx.filename;
   try {
-    fs.writeFileSync(ctx.codeFilePath, ctx.request.body.inputContent);
+    fs.writeFileSync(ctx.codeFile, ctx.request.body.inputContent);
   } catch (e) {
     ctx.log("代码写入文件失败:", e.message);
     return;
@@ -110,11 +113,14 @@ app.use(async (ctx, next) => {
 // 执行程序文件
 app.use(async (ctx, next) => {
   try {
-    const rlt = execSync(`${ctx.cmd} ${ctx.codeFilePath}`);
+    const rlt = execSync(ctx.cmd, { cwd: ctx.onceDirPath });
     ctx.body = rlt.toString();
   } catch (e) {
     ctx.log("程序执行失败:", e.message);
     ctx.body = e.message;
+    // 发生错误时，删除执行的命令信息(首行信息)
+    ctx.body = ctx.body.slice(ctx.body.indexOf("\n") + 1);
+    ctx.success = false;
   }
 });
 
