@@ -1,0 +1,6 @@
+dist
+.vscode
+node_modules
+.eslint*
+.prettier*
+README.md

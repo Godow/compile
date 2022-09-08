@@ -29,29 +29,36 @@
 
 <script>
 import axios from "axios";
-import { serverOrigin } from "../public/server.js";
+import config from "../public/config.json";
 export default {
   data() {
     return {
       inputContent: "",
       result: "",
-
+      // 语言列表
       langOptions: [
         {
           value: "node",
           label: "node",
         },
       ],
-      lang: "node",
+      lang: "node", // 默认语言、选中的语言
     };
   },
   methods: {
+    getConfig() {
+      return new URL(`../public/server.json`, import.meta.url);
+    },
     run() {
+      if (!this.inputContent) {
+        return;
+      }
+
       axios({
         method: "post",
-        url: serverOrigin,
+        url: config.serverOrigin,
         data: {
-          lang: "node",
+          lang: this.lang,
           inputContent: this.inputContent,
         },
       }).then((res) => {

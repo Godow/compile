@@ -1,6 +1,10 @@
-FROM nginx:alpine
-# RUN apt-get update && apt-get install node@18.7.0 -y
-# RUN npm install && npm run build
-COPY dist /usr/share/nginx/html
+FROM node:alpine3.16 AS builder
+COPY . /app/web
+WORKDIR /app/web
+RUN npm install -g cnpm --registry=https://registry.npmmirror.com/
+RUN cnpm config set registry https://registry.npmmirror.com/
+RUN cnpm install && cnpm run build
+
+FROM nginx:alpine AS prod
+COPY --from=builder /app/web/dist /usr/share/nginx/html
 EXPOSE 80
-# CMD [ "service", "nginx", "start" ]
