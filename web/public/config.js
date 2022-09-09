@@ -1,5 +1,5 @@
 window.appConfig = {
-  serverOrigin: "http://127.0.0.1:3000",
+  serverOrigin: "http://110.42.224.246:3000",
   langOptions: [
     {
       value: "node",
