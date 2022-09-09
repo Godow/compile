@@ -31,8 +31,23 @@ const langMap = new Map([
     "cpp",
     {
       filename: "main.cpp",
-      cmd: "gcc main.cpp -o main && ./main",
+      cmd: "g++ main.cpp -o main && ./main",
+    },
+  ],
+  [
+    "java",
+    {
+      filename: "HelloWorld.java",
+      cmd: "javac HelloWorld.java && java HelloWorld",
+    },
+  ],
+  [
+    "golang",
+    {
+      filename: "main.go",
+      cmd: "go run main.go",
     },
   ],
 ]);
+
 module.exports.langMap = langMap;

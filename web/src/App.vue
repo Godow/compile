@@ -1,6 +1,12 @@
 <template>
   <div class="home-page">
-    <el-select v-model="lang" class="m-2" placeholder="Select" size="large">
+    <el-select
+      v-model="lang"
+      @change="langChanged()"
+      class="m-2"
+      placeholder="Select"
+      size="large"
+    >
       <el-option
         v-for="item in langOptions"
         :key="item.value"
@@ -29,39 +35,34 @@
 
 <script>
 import axios from "axios";
-import config from "../public/config.json";
 export default {
   data() {
     return {
       inputContent: "",
       result: "",
       // 语言列表
-      langOptions: [
-        {
-          value: "node",
-          label: "node",
-        },
-        {
-          value: "javascript",
-          label: "javascript",
-        },
-        {
-          value: "bash",
-          label: "bash",
-        },
-        {
-          value: "c",
-          label: "c",
-        },
-        {
-          value: "cpp",
-          label: "cpp",
-        },
-      ],
+      langOptions: window.appConfig.langOptions,
       lang: "node", // 默认语言、选中的语言
     };
   },
   methods: {
+    // 切换语言
+    langChanged() {
+      this.inputContent = "";
+      if (this.lang === "java") {
+        this.inputContent =
+          'public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println("Hello World");\n    }\n}';
+      } else if (this.lang === "cpp") {
+        this.inputContent =
+          '#include <iostream>\nusing namespace std;\nint main()\n{\n    cout << "Hello, world!" << endl;\n    return 0;\n}';
+      } else if (this.lang === "c") {
+        this.inputContent =
+          '#include <stdio.h>\n \nint main()\n{\n    printf("Hello, World! \\n");\n    return 0;\n}';
+      } else if (this.lang === "golang") {
+        this.inputContent =
+          'package main\nimport "fmt"\n\nfunc main() {\n    fmt.Println("Hello, World!")\n}';
+      }
+    },
     async run() {
       if (!this.inputContent) {
         return;
@@ -69,7 +70,7 @@ export default {
 
       axios({
         method: "post",
-        url: config.serverOrigin,
+        url: window.appConfig.serverOrigin,
         data: {
           lang: this.lang,
           inputContent: this.inputContent,
