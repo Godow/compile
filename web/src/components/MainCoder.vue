@@ -145,6 +145,7 @@ export default {
     line-height: 80px;
     text-align: center;
 
+    // 该文字不可被选中
     user-select: none;
 
     &:hover {
