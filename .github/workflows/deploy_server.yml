@@ -1,0 +1,36 @@
+# This is a basic workflow to help you get started with Actions
+
+name: deploy web to gh-pages
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "master" branch
+  push:
+    branches: ["master"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  deploy_server:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3.4.1
+        with:
+          node-version: "18.7"
+
+      - name: Install and Build
+        run: cd server && npm install && npm run build
+
+      - name: Deploy 🚀
+        uses: crazy-max/ghaction-github-pages@v3.0.0
+        with:
+          build_dir: ./server/dist
+          target_branch: server_prod
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
