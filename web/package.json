@@ -8,10 +8,14 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@codemirror/lang-javascript": "^6.0.2",
+    "@codemirror/theme-one-dark": "^6.0.0",
     "axios": "^0.27.2",
+    "codemirror-editor-vue3": "^2.1.7",
+    "element-plus": "^2.2.16",
     "vue": "^3.2.38",
-    "vue-router": "^4.1.5",
-    "element-plus": "^2.2.16"
+    "vue-codemirror": "^6.1.1",
+    "vue-router": "^4.1.5"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",
