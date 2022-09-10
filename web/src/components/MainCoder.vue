@@ -44,17 +44,13 @@ import axios from "axios";
 import { ElMessage } from "element-plus";
 
 // language 语法高亮
-import "/codemirror/mode/javascript/javascript.js"; // js
-import "/codemirror/mode/clike/clike.js"; // c c++ java
-import "/codemirror/mode/go/go.js"; // go
-import "/codemirror/mode/shell/shell.js"; // shell
+import "@/lib/codemirror/mode/javascript/javascript.js"; // js
+import "@/lib/codemirror/mode/clike/clike.js"; // c c++ java
+import "@/lib/codemirror/mode/go/go.js"; // go
+import "@/lib/codemirror/mode/shell/shell.js"; // shell
 
 // theme
-import "/codemirror/theme/panda-syntax.css";
-
-// web\codemirror\mode\javascript\javascript.js
-
-// import { ref } from "vue";
+import "@/lib/codemirror/theme/panda-syntax.css";
 
 export default {
   components: { Codemirror, ElMessage },
@@ -90,6 +86,7 @@ export default {
     // 切换语言
     langChanged() {
       this.inputContent = "";
+      this.result = "";
       if (this.lang === "java") {
         this.inputContent =
           '// pleash don\'t change the top class name\npublic class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println("Hello, Java !");\n    }\n}';
