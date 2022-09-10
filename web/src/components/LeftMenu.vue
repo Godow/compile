@@ -1,10 +1,15 @@
 <template>
-  <div>
+  <div class="left-menu">
     <div class="switch">
-      <el-icon :size="25" v-if="isCollapse" @click="isCollapse = !isCollapse">
+      <el-icon
+        :size="25"
+        color="#fff"
+        v-if="isCollapse"
+        @click="isCollapse = !isCollapse"
+      >
         <Grid />
       </el-icon>
-      <el-icon :size="25" v-else @click="isCollapse = !isCollapse">
+      <el-icon :size="25" color="#fff" v-else @click="isCollapse = !isCollapse">
         <Menu />
       </el-icon>
     </div>
@@ -16,6 +21,9 @@
       @open="handleOpen"
       @close="handleClose"
       collapse-transition
+      active-text-color="#ffd04b"
+      background-color="#545c64"
+      text-color="#fff"
     >
       <div v-for="(item, inx) in state.langOptionList" :key="inx">
         <el-menu-item :index="String(inx)" @click="changeLang(item.value)">
@@ -64,15 +72,17 @@ const handleClose = (key: string, keyPath: string[]) => {
   min-height: 400px;
 }
 
-.switch {
-  /* background-color: red; */
-  display: inline-block;
-  width: 64px;
-  text-align: center;
-  padding: 10px;
-  /* border: 4px solid blue; */
-  &:hover {
-    cursor: pointer;
+.left-menu {
+  height: 100vh;
+  background-color: #545c64;
+  .switch {
+    display: inline-block;
+    width: 64px;
+    text-align: center;
+    padding: 10px;
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 </style>
