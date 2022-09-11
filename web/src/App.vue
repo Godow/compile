@@ -7,7 +7,7 @@
 
 <script>
 import LeftMenu from "./components/LeftMenu.vue";
-import MainCoder from "./components/MainCoder.vue";
+import MainCoder from "./components/MainCoder/index.vue";
 export default {
   components: {
     LeftMenu,

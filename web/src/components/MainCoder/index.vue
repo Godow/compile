@@ -33,10 +33,14 @@
 import Codemirror from "codemirror-editor-vue3";
 import axios from "axios";
 import { ElMessage } from "element-plus";
+import { coderConfig } from "./config.js";
 // import VueDragResize from "vue-drag-resize";
 // 可选择导入默认样式
 // import "vue-draggable-resizable/dist/VueDraggableResizable.css";
 import VueDraggableResizable from "vue-draggable-resizable/src/components/vue-draggable-resizable.vue";
+
+// codemirror基础样式
+// import "@/lib/codemirror/lib/codemirror.css";
 
 // language 语法高亮
 import "@/lib/codemirror/mode/javascript/javascript.js"; // js
@@ -47,6 +51,44 @@ import "@/lib/codemirror/mode/shell/shell.js"; // shell
 // theme
 import "@/lib/codemirror/theme/panda-syntax.css";
 import "@/lib/codemirror/theme/oceanic-next.css";
+
+// 支持使用Sublime快捷键
+import "@/lib/codemirror/keymap/sublime.js";
+
+// 搜索功能的依赖
+import "@/lib/codemirror/addon/dialog/dialog.js";
+import "@/lib/codemirror/addon/dialog/dialog.css";
+// 支持搜索功能
+import "@/lib/codemirror/addon/search/search";
+import "@/lib/codemirror/addon/search/searchcursor.js";
+
+// 支持各种代码折叠
+import "@/lib/codemirror/addon/fold/foldgutter.css";
+import "@/lib/codemirror/addon/fold/foldcode.js";
+import "@/lib/codemirror/addon/fold/foldgutter.js";
+import "@/lib/codemirror/addon/fold/brace-fold.js";
+import "@/lib/codemirror/addon/fold/comment-fold.js";
+
+// 支持代码区域全屏功能
+import "@/lib/codemirror/addon/display/fullscreen.css";
+import "@/lib/codemirror/addon/display/fullscreen.js";
+
+// 支持代码自动补全
+import "@/lib/codemirror/addon/hint/show-hint.css";
+import "@/lib/codemirror/addon/hint/show-hint.js";
+import "@/lib/codemirror/addon/hint/anyword-hint.js";
+
+// 行注释
+import "codemirror/addon/comment/comment.js";
+
+//括号匹配
+import "@/lib/codemirror/addon/edit/matchbrackets.js";
+import "@/lib/codemirror/addon/edit/closebrackets.js";
+
+// import "@/lib/codemirror/addon/hint/show-hint.css"; // 自动补全
+// import "@/lib/codemirror/addon/hint/show-hint.js"; // 自动补全
+import "@/lib/codemirror/addon/hint/javascript-hint.js"; // 自动补全
+import "@/lib/codemirror/mode/sql/sql.js"; // 自动补全
 
 export default {
   components: { Codemirror, ElMessage, VueDraggableResizable },
@@ -70,15 +112,35 @@ export default {
       result: "",
       // 语言列表
       langOptions: window.appConfig.langOptions,
-      coder: "",
+      // 代码输入框配置项
       cmOptions: {
-        mode: "clike", // 语言模式
+        mode: coderConfig.get(this.lang), // 语言模式
         theme: "panda-syntax", // 主题
         lineNumbers: true, // 显示行号
         smartIndent: true, // 智能缩进
         indentUnit: 4, // 智能缩进单位为4个空格长度
-        foldGutter: true, // 启用行槽中的代码折叠
+        // foldGutter: true, // 启用行槽中的代码折叠
         styleActiveLine: true, // 显示选中行的样式
+        autofocus: true, // 自动获得焦点
+        // 括号匹配
+        matchBrackets: true,
+        autoCloseBrackets: true,
+        // 绑定sublime快捷键
+        keyMap: "sublime",
+        // 开启代码折叠
+        lineWrapping: true,
+        foldGutter: true,
+        gutters: [
+          "CodeMirror-linenumbers",
+          "CodeMirror-foldgutter",
+          "CodeMirror-lint-markers",
+        ],
+        // CodeMirror-lint-markers是实现语法报错功能
+        lint: true,
+        // 全屏模式
+        fullScreen: false,
+        extraKeys: { Ctrl: "autocomplete" }, //自定义快捷键
+        autoRefresh: true, // 自动刷新
       },
 
       outputOptions: {
@@ -87,6 +149,7 @@ export default {
         smartIndent: false, // 智能缩进
         foldGutter: false, // 启用行槽中的代码折叠
         readOnly: true, // 只读
+        cursorBlinkRate: -1, // 光标闪动的间隔，单位为毫秒。默认为530。当设置为0时，会禁用光标闪动。负数会隐藏光标
       },
 
       dragging: false, // 是否正在拖动
@@ -120,11 +183,14 @@ export default {
     },
     // 切换语言
     langChanged() {
+      // 变更codemirror配置
+      this.cmOptions.mode = coderConfig.get(this.lang) || "clike"; // 如果找不到就用clike
+
       this.inputContent = "";
       this.result = "";
       if (this.lang === "java") {
         this.inputContent =
-          '// pleash don\'t change the top class name\npublic class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println("Hello, Java !");\n    }\n}';
+          '// Pleash don\'t change the top class name\npublic class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println("Hello, Java !");\n    }\n}';
       } else if (this.lang === "cpp") {
         this.inputContent =
           '#include <iostream>\nusing namespace std;\nint main()\n{\n    cout << "Hello, C++ !" << endl;\n    return 0;\n}';
@@ -191,7 +257,7 @@ export default {
     resize: vertical;
     max-height: 90vh;
     min-height: 50px;
-    height: 100px;
+    height: auto;
     resize: none;
   }
 
