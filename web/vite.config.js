@@ -7,10 +7,13 @@ import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 
-import alias from "@rollup/plugin-alias";
-
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      external: /vue-draggable-resizable/,
+    },
+  },
   plugins: [
     vue(),
     AutoImport({
@@ -19,7 +22,6 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver()],
     }),
-    alias(),
   ],
   resolve: {
     alias: {
