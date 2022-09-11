@@ -7,7 +7,7 @@
       @change="codeInputChange"
     />
 
-    <div class="division" @mousedown="mousedown" @mouseup="mouseup" />
+    <div class="division" @mousedown="mousedown" />
 
     <Codemirror
       class="code-output"
@@ -58,6 +58,10 @@ export default {
         const ele = document.getElementsByClassName("code-output")?.[0];
         ele.style.height = `${this.outputHeight + this.pos[1] - e.screenY}px`;
       }
+    });
+
+    document.addEventListener("mouseup", () => {
+      this.dragging = false;
     });
   },
   data() {
