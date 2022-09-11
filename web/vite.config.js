@@ -11,7 +11,7 @@ import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 export default defineConfig({
   build: {
     rollupOptions: {
-      external: /vue-draggable-resizable/,
+      external: ["vue-draggable-resizable"],
     },
   },
   plugins: [
