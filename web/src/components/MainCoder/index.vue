@@ -79,7 +79,7 @@ import "@/lib/codemirror/addon/hint/show-hint.js";
 import "@/lib/codemirror/addon/hint/anyword-hint.js";
 
 // 行注释
-import "codemirror/addon/comment/comment.js";
+import "@/lib/codemirror/addon/comment/comment.js";
 
 //括号匹配
 import "@/lib/codemirror/addon/edit/matchbrackets.js";
