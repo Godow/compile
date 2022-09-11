@@ -53,23 +53,24 @@ onMounted(() => {
 });
 const emit = defineEmits(["changeLang"]);
 const changeLang = (lang) => {
-  console.log("lang", lang);
   emit("changeLang", lang);
 };
 const isCollapse = ref(false);
 
 const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
+  // console.log(key, keyPath);
 };
 const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
+  // console.log(key, keyPath);
 };
 </script>
 
 <style scoped lang="less">
+.el-menu-vertical-demo {
+  border: 0;
+}
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
-  min-height: 400px;
+  width: 150px;
 }
 
 .left-menu {
