@@ -190,16 +190,16 @@ export default {
       this.result = "";
       if (this.lang === "java") {
         this.inputContent =
-          '// Pleash don\'t change the top class name\npublic class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println("Hello, Java !");\n    }\n}';
+          '// Pleash don\'t change the top class name\npublic class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println("Hello Java !");\n    }\n}';
       } else if (this.lang === "cpp") {
         this.inputContent =
-          '#include <iostream>\nusing namespace std;\nint main()\n{\n    cout << "Hello, C++ !" << endl;\n    return 0;\n}';
+          '#include <iostream>\nusing namespace std;\nint main()\n{\n    cout << "Hello C++ !" << endl;\n    return 0;\n}';
       } else if (this.lang === "c") {
         this.inputContent =
-          '#include <stdio.h>\n \nint main()\n{\n    printf("Hello, C ! \\n");\n    return 0;\n}';
+          '#include <stdio.h>\n \nint main()\n{\n    printf("Hello C ! \\n");\n    return 0;\n}';
       } else if (this.lang === "golang") {
         this.inputContent =
-          'package main\nimport "fmt"\n\nfunc main() {\n    fmt.Println("Hello, golang !")\n}';
+          'package main\nimport "fmt"\n\nfunc main() {\n    fmt.Println("Hello Golang !")\n}';
       }
     },
     async run() {

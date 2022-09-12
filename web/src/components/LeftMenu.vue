@@ -27,7 +27,13 @@
     >
       <div v-for="(item, inx) in state.langOptionList" :key="inx">
         <el-menu-item :index="String(inx)" @click="changeLang(item.value)">
-          <el-icon>{{ item.value?.[0]?.toUpperCase() }}</el-icon>
+          <!-- <el-icon>{{ item.value?.[0]?.toUpperCase() }}</el-icon> -->
+          <template v-if="item.icon">
+            <i class="iconfont" :class="item.icon"></i>
+          </template>
+          <template v-else>
+            <el-icon>{{ item.value?.[0]?.toUpperCase() }}</el-icon>
+          </template>
           <template #title>{{ item.value }}</template>
         </el-menu-item>
       </div>
@@ -45,7 +51,7 @@ import {
 } from "@element-plus/icons-vue";
 
 const state = reactive({
-  langOptionList: [{ value: 123 }],
+  langOptionList: [],
 });
 
 onMounted(() => {
@@ -84,6 +90,10 @@ const handleClose = (key: string, keyPath: string[]) => {
     &:hover {
       cursor: pointer;
     }
+  }
+
+  .iconfont {
+    margin-right: 10px;
   }
 }
 </style>
