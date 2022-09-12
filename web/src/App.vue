@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <header-bar></header-bar>
+    <header-bar @downloadToFile="downloadToFile"></header-bar>
     <div class="body">
       <LeftMenu @changeLang="changeLang"></LeftMenu>
       <MainCoder ref="coder" :lang="lang"></MainCoder>
@@ -12,8 +12,6 @@
 import LeftMenu from "./components/LeftMenu.vue";
 import MainCoder from "./components/MainCoder/index.vue";
 import { ElMessage } from "element-plus";
-import { saveAs } from "file-saver";
-import { langMapFile } from "@/config/langMapFile.js";
 import headerBar from "./components/headerBar/index.vue";
 export default {
   components: {
@@ -32,16 +30,9 @@ export default {
     changeLang(lang) {
       this.lang = lang;
     },
-    // 添加到收藏夹
+    // 保存到本地
     downloadToFile() {
-      const content = this.$refs.coder.inputContent;
-      if (/^\s*$/.test(content)) {
-        ElMessage("There is no content need to save");
-      } else {
-        const fileName = langMapFile.get(this.lang) || `${this.lang}.txt`;
-        const blob = new Blob([content]);
-        saveAs(blob, fileName);
-      }
+      this.$refs.coder.downloadToFile();
     },
   },
 };

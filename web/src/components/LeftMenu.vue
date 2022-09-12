@@ -2,14 +2,14 @@
   <div class="left-menu">
     <div class="switch">
       <el-icon
-        :size="25"
+        :size="18"
         color="#fff"
         v-if="isCollapse"
         @click="isCollapse = !isCollapse"
       >
         <Grid />
       </el-icon>
-      <el-icon :size="25" color="#fff" v-else @click="isCollapse = !isCollapse">
+      <el-icon :size="18" color="#fff" v-else @click="isCollapse = !isCollapse">
         <Menu />
       </el-icon>
     </div>
@@ -27,7 +27,6 @@
     >
       <div v-for="(item, inx) in state.langOptionList" :key="inx">
         <el-menu-item :index="String(inx)" @click="changeLang(item.value)">
-          <!-- <el-icon>{{ item.value?.[0]?.toUpperCase() }}</el-icon> -->
           <template v-if="item.icon">
             <i class="iconfont" :class="item.icon"></i>
           </template>
@@ -76,7 +75,7 @@ const handleClose = (key: string, keyPath: string[]) => {
   border: 0;
 }
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 150px;
+  width: 130px;
 }
 
 .left-menu {
@@ -84,7 +83,7 @@ const handleClose = (key: string, keyPath: string[]) => {
   background-color: #545c64;
   .switch {
     display: inline-block;
-    width: 64px;
+    width: 56px;
     text-align: center;
     padding: 10px;
     &:hover {
@@ -93,6 +92,7 @@ const handleClose = (key: string, keyPath: string[]) => {
   }
 
   .iconfont {
+    font-size: 17px;
     margin-right: 10px;
   }
 }

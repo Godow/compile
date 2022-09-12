@@ -7,7 +7,7 @@
       @change="codeInputChange"
     />
 
-    <div class="division" @mousedown="mousedown" />
+    <div class="division" @mousedown="mousedown"></div>
 
     <Codemirror
       class="code-output"
@@ -33,6 +33,8 @@
 import Codemirror from "codemirror-editor-vue3";
 import axios from "axios";
 import { ElMessage } from "element-plus";
+import { saveAs } from "file-saver";
+import { langMapFile } from "@/config/langMapFile.js";
 import { codemirrorConfig } from "@/config/codemirrorConfig.js";
 // import VueDragResize from "vue-drag-resize";
 // 可选择导入默认样式
@@ -137,7 +139,7 @@ export default {
         ],
         // CodeMirror-lint-markers是实现语法报错功能
         lint: true,
-        // 全屏模式
+        // 是否全屏模式
         fullScreen: false,
         // extraKeys: { Ctrl: "autocomplete" }, // 自动补全快捷键
         autoRefresh: true, // 自动刷新
@@ -169,6 +171,17 @@ export default {
     },
   },
   methods: {
+    // 保存到本地
+    downloadToFile() {
+      const content = this.inputContent;
+      if (/^\s*$/.test(content)) {
+        ElMessage("There is no content need to save");
+      } else {
+        const fileName = langMapFile.get(this.lang) || `${this.lang}.txt`;
+        const blob = new Blob([content]);
+        saveAs(blob, fileName);
+      }
+    },
     mousedown(e) {
       this.dragging = true;
       this.pos = [e.screenX, e.screenY];
@@ -259,6 +272,7 @@ export default {
     min-height: 50px;
     height: auto;
     resize: none;
+    font-size: 14px;
   }
 
   .run-btn-wrapper {
