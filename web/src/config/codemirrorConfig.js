@@ -1,5 +1,5 @@
 // 编程语言与codemirror语言文件的映射
-const coderConfig = new Map([
+const codemirrorConfig = new Map([
   ["javascript", "javascript"],
   ["node", "javascript"],
   ["java", "clike"],
@@ -10,4 +10,4 @@ const coderConfig = new Map([
   ["sql", "sql"],
 ]);
 
-export { coderConfig };
+export { codemirrorConfig };

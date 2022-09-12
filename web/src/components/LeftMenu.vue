@@ -74,7 +74,7 @@ const handleClose = (key: string, keyPath: string[]) => {
 }
 
 .left-menu {
-  height: 100vh;
+  height: 100%;
   background-color: #545c64;
   .switch {
     display: inline-block;

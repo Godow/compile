@@ -33,7 +33,7 @@
 import Codemirror from "codemirror-editor-vue3";
 import axios from "axios";
 import { ElMessage } from "element-plus";
-import { coderConfig } from "./config.js";
+import { codemirrorConfig } from "@/config/codemirrorConfig.js";
 // import VueDragResize from "vue-drag-resize";
 // 可选择导入默认样式
 // import "vue-draggable-resizable/dist/VueDraggableResizable.css";
@@ -114,7 +114,7 @@ export default {
       langOptions: window.appConfig.langOptions,
       // 代码输入框配置项
       cmOptions: {
-        mode: coderConfig.get(this.lang), // 语言模式
+        mode: codemirrorConfig.get(this.lang), // 语言模式
         theme: "panda-syntax", // 主题
         lineNumbers: true, // 显示行号
         smartIndent: true, // 智能缩进
@@ -139,7 +139,7 @@ export default {
         lint: true,
         // 全屏模式
         fullScreen: false,
-        extraKeys: { Ctrl: "autocomplete" }, //自定义快捷键
+        // extraKeys: { Ctrl: "autocomplete" }, // 自动补全快捷键
         autoRefresh: true, // 自动刷新
       },
 
@@ -184,7 +184,7 @@ export default {
     // 切换语言
     langChanged() {
       // 变更codemirror配置
-      this.cmOptions.mode = coderConfig.get(this.lang) || "clike"; // 如果找不到就用clike
+      this.cmOptions.mode = codemirrorConfig.get(this.lang) || "clike"; // 如果找不到就用clike
 
       this.inputContent = "";
       this.result = "";
@@ -233,7 +233,7 @@ export default {
 <style scoped lang="less">
 .home-page {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -265,7 +265,7 @@ export default {
     position: fixed;
     z-index: 10;
     right: 30px;
-    top: 30px;
+    bottom: 130px;
 
     .run {
       display: fixed;

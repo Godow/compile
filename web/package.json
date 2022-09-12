@@ -13,6 +13,7 @@
     "axios": "^0.27.2",
     "codemirror-editor-vue3": "^2.1.7",
     "element-plus": "^2.2.16",
+    "file-saver": "^2.0.5",
     "vue": "^3.2.38",
     "vue-codemirror": "^6.1.1",
     "vue-draggable-resizable": "^2.3.0",
